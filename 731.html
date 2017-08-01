@@ -5,18 +5,26 @@
     <title></title>
 </head>
 <body>
-<canvas  id="mydraw" width="200" height="200" style="background:#ccffef">a drawing22222</canvas>
+   
+<canvas  id="mydraw" width="1000" height="1000" >a drawing22222</canvas>
 
+
+ <img src="1.jpg" />
 
 
 </body>
 <script>
 //fillStyle 填充色 
-//
+//fillRect 填充
+//strokeStyle 描边 颜色
+//strokeRect  描边
+//线条宽度由 linewidth属性控制  linecap来控制线头末端是平头 还是圆头 还是方头 butt round square  或者通过 lineJoin 来控制线条 相交的方式 是否是圆交 斜交 还是 斜接  round bevel miter
 
    var  drawing=document.getElementById("mydraw");
 if(drawing.getContext){
+      /*
    var  context=drawing.getContext("2d");
+ 
    context.fillStyle="#0f0fff";
    context.fillRect(10,10,40,40);
    
@@ -24,10 +32,123 @@ if(drawing.getContext){
 
    context.fillRect(40,40,100,100);
    
+   context.strokeStyle="red";
+   context.strokeRect(30,30,100,100);
+   context.strokeStyle="green";
+   context.strokeRect(80,80,120,120);
+
+    context.clearRect(40,40,50,50);
+*/
+//beiginPath()  开始绘制新的路径 
+/*
+ arc(x,y,radius,startAngle,endAngle,counterclockwise ) 以x,y 为圆心绘制一条弧线，弧线半径为radius 角度以弧度表示
+
+ arcTo(x1,y1,x2,y2,radius) 从上一点开始绘制  一条直线  直到 x2,y2 为止 
+ bezierCurveTo(c1x,c1y,c2y,c3y,x,y)
+
+ lineTo(x,y);从上一点开始绘制一条直线 直到x,y 为止
+ moveTo(x,y);将绘画游标到x,y 不画线 
+ quadratiCurveTo(cx,cy,x,y) 从上一点开始一条二次曲线
+ rect(x,y,width,height) 从点x,y 绘制矩形
+
+
+
+//绘制开始
+context.beginPath();
+context.arc(100,100,99,0,2*Math.PI,false);
+context.moveTo(194,100);
+context.arc(100,100,92,0,2*Math.PI,false);
+context.moveTo(100,100);
+context.lineTo(100,15);
+context.moveTo(100,100);
+context.lineTo(35,100);
+context.stroke();
+//绘制文本   
+/*
+  font 表示字体的文本样式 大小及字体 
+  textAlign 文本对其方式 
+  textBaseline 标示文本的基线
+
+
+ context.font="14px  Arial";
+ context.textAlign="center";
+ context.textBaseline="middle";
+ context.fillText("12",100,20);
+/*
+  rotate 围绕原点 旋转图像  
+  scale 缩放图像 
+  translate  将坐标原点移动到x,y 
+  transform  直接修改变化矩阵
+
+
+
+context.beginPath();
+
+context.arc(100,100,99,0,2*Math.PI,false);
+
+context.moveTo(194,100);
+context.arc(100,100,94,0,2*Math.PI,false);
+//变换原点 
+context.translate(100,100);
+context.rotate(-3);
+//移动到原点 
+context.moveTo(0,0);
+context.lineTo(0,85);
+
+context.moveTo(0,0);
+context.lineTo(-65,0);
+
+
+context.stroke();
+
+
+
+
+var test=document.images[0];
+console.log(test);
+context.drawImage(test,0,0,500,500,0,0,600,600);
+context.stroke();
+*/
+//灰阶处理器 
+var context=drawing.getContext("2d"),
+    image=document.images[0],
+    imagedata,data,i,len,average,red,green,blue,alpha;
+    //绘制图像
+    context.drawImage(image,0,0);
+    imagedata=context.getImageData(0,0,image.width,image.height);
+    data=imagedata.data;
+
+    for(i=0,len=data.length;i<len;i+=4){
+        red=data[i];
+        green=data[i+1];
+        blue=data[i+2];
+        alpha=data[i+3];
+        average=Math.floor((red+green+blue)/3);
+        data[i]=average;
+        data[i+1]=average;
+        data[i+2]=average;
+
+
+
+
+    }
+
+      imagedata.data=data;
+     // console.log(imagedata);
+
+      context.putImageData(imagedata,0,0);
+    //  context.stroke();
+
+
+
+
+
+
+   
    
 }else{
 
-    alert(11);
+
 }
    
 
