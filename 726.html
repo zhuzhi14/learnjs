@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+//2017年7月26日14:04:19  面向对象变成  
+//有2种 属性  数据属性 和访问器属性
+//访问器属性 有4种描述行为的特性  
+//1 Configurable  默认是ture 通过delete 删除属性 而重新定义属性
+//2 Enumerable 表示能否通过for-in 循环访问属性  
+//3 Writable 表示能否修改属性的值 
+//4 value  包含这个属性的数据值 
+/*
+var person={}; //声明一个对象 
+Object.defineProperty(person,"name",{
+	writable:false,
+    value:"Nicoco"  
+});
+
+alert(person.name);
+person.name="Greg";
+alert(person.name);
+*/
+/*
+6.1.1 get 和 set
+var  book={
+	_year:2004,
+	edition:1
+};
+
+Object.defineProperty(book,"year",{
+   get:function () {
+   	    return this._year;
+   },//ge
+   set:function (newvalue) {
+   	  if(newvalue>2004){
+         this._year=newvalue;
+         this.edition+=newvalue-2004;
+
+   	  }
+   }
+
+
+});
+book.year=2005;
+onsole.log(book.edition);
+console.log(book._year);c
+
+*/
+/*
+  定义多个属性 defineProperties
+
+
+ var  book={};
+ Object.defineProperties(book,{
+     _year:{
+     	value:2004
+     },
+     edition:{
+     	value:1
+     },
+     year:{
+        get:function(){
+
+        	return this._year;
+        },
+
+        set: function(value){
+   				if(value>2004){
+
+   					this._year=value;
+   					this.edition+=value-2004;
+   				}
+
+        }
+
+
+     }
+
+ });
+
+var descriptor=Object.getOwnPropertyDescriptor(book,"_year");
+alert(descriptor.value);
+通过getOwnPropertyDescirptor 来读取属性 的特性 
+*/
+
+/*
+ 工厂模式 是用 函数 来封装 特定接口 创建细节 
+
+function   creatPerson(name,age,job){
+
+    var  o=new Object();
+    o.name=name;
+    o.age=age;
+    o.job=job;
+    o.sayName=function(){
+    	console.log(this.name);
+    }
+
+     return o;
+}//写一个函数 来实现js 
+//调用 
+var person1=creatPerson("xiaomingg","12","student");
+console.log(person1.sayName());
+var person2=creatPerson("xiaohong","14","meizi");
+
+//构造函数 
+function Person(name,age,job){
+  this.name=name;
+  this.age=age;
+  this.job=job;
+  this.sayName=function(){
+     alert(this.name);
+
+  }
+
+}
+//没有返回值
+var  person1=new Person("xiaohong","145","meizi");
+//instanceof 实例 操作符 来得到实现 
+person1.sayName();
+Person("xiaohua","111","car");
+window.sayName();
+var o= new Object();
+Person.call(o,"kaise","25","car1");
+o.sayName();
+//三种 调用方式构造函数调用 
+*/
+/*6.2.3  prototype
+
+每个函数 都有原型 通过prototype直接添加到 原型对象中 
+
+
+function Person(){
+
+}
+
+Person.prototype.name="xiaohong";
+Person.prototype.age="12";
+Person.prototype.job="sofeware engineer";
+Person.prototype.sayName=function(){
+	alert(this.name);
+}
+
+var person1=new Person();
+var  person2=new Person();
+person1.name="xiaohua";
+//person1.sayName();
+//person2.sayName();
+//delete 来删除 实例属性 
+//delete person1.name;
+//alert(person1.name);
+//hasOwnProperty 检测一个属性 是否存在实例中 来自实例就是true 否则是 false
+//alert(person1.hasOwnProperty("name"));
+//alert("name" in person1);//判断name 属性 是否在 person1 中
+
+//判断改属性 是否为原型中的属性 
+/* 
+ function  hasPrototypeProperty(Object,name){
+    
+    return  !Object.hasOwnProperty(name) && (name in Object);
+
+ }
+ 
+//alert(hasPrototypeProperty(person1,"name"));
+//枚举实例属性 可以用 object.keys()方法 
+var keys=Object.keys(Person.prototype);
+//alert(keys);
+var  p1=new Person();
+p1.name="rob";
+p1.age=31;
+var  p1keys=Object.keys(p1);
+//如果通过实例调用 	Object.keys 只返回的name age 实例属性
+//alert(p1keys);
+//如果 你想得到所有的实例属性  无论是否枚举 都可以 是用  Object.getOwnPropertyNames();
+var keys=Object.getOwnPropertyNames(Person.prototype);
+alert(keys);
+
+//2017年7月26日16:20:16  更加简单的原型语法
+function  Person(){};
+
+Person.prototype={
+     name:"Nicoco",
+     age:21,
+     job:"car",
+     sayName:function(){
+     	console.log(this.name);
+     }
+
+};
+
+// prototype 的动态性
+
+var  friend=new  Person();
+
+Person.prototype.sayHi=function(){
+
+	alert("Hi");
+}
+
+friend.sayHi();
+//重写 原型后 等于 切断了 构造函数 与最初原型之间的关系  实例中的指针仅仅指向原型 不是构造函数
+
+*/
+/*2017年7月26日16:38:43  
+alert(typeof  Array.prototype.sort);
+alert(typeof  String.prototype.substring);
+
+String.prototype.startsWith=function(text){
+
+	return this.indexOf(text)==0;
+}
+
+var msg="hello  world";
+
+alert(msg.startsWith("hello"));
+
+*/
+
+//2017年7月26日16:45:30 6.24  由于都是用原型模式的问题 通过在实例上添加的同名属性  编变成共享的属性 
+//解决这个问题 采用 构造函数 和原型 来解决问题
+/*
+function Person(name,age,job){
+      this.name=name;
+      this.age=age;
+      this.job=job;
+
+      this.friend=["ali","jack"];
+
+
+
+}
+
+Person.prototype={
+    constructor:Person,
+    sayName:function(){
+
+    	alert(this.name);
+    }
+
+}
+
+var person1=new Person("xiaohong",12,"sofeware engineer");
+var person2=new Person("xiaohua",14,"abc");
+
+person1.friend.push("van");
+console.log(person1.friend);
+console.log(person2.friend);
+
+//6.25  动态原型模式 
+
+function Person(name,age,job){
+      this.name=name;
+      this.age=age;
+      this.job=job;
+
+      this.friend=["ali","jack"];
+        if(typeof this.sayName !="function"){
+
+        	Person.prototype.sayName=function(){
+
+        		alert(this.name);
+        	}
+        }
+
+
+}
+
+var person1=new Person("xiaohong",12,"sofeware engineer");
+person1.sayName();
+
+
+
+//需求 写一个特殊函数 把数组 能够| 链接 
+
+   function specialArray(){
+       var  values= new Array();
+
+       values.push.apply(values,arguments);
+
+       values.toPipedString= function(){
+
+       	  return this.join("|");
+       }
+   
+        return values;
+
+   }
+   
+   var  colors=specialArray("red","blue","black");
+
+   alert(colors.toPipedString());
+*/
+
+  function  SuperType(){
+    //构造函数 性质是true
+  	  this.property= true;
+  }
+  //一个叫getSuperValue的原型 返回 true
+  SuperType.prototype.getSuperValue=function(){
+  	  return this.property;
+  }
+
+  function Subtype(){
+
+   this.subproperty=false;
+
+  }
+//subtype的原型来自 SuperType的实例 
+  Subtype.prototype=new SuperType();
+
+SuperType.prototype.getSubValue=function(){
+
+      return this.subproperty;
+}
+
+//var  instance= new Subtype();
+//alert(instance.getSuperValue());//返回的true
+//alert(instance.getSubValue());
+
+//继承 是 通过supertype 的实例来继承 的subtype继承了supertype的原型  
+  
+//165 页面 
+//重写 supertype getSuperValue;
+
+Subtype.prototype.getSuperValue=function(){
+
+	return  false;
+}
+
+
+
+
+var  instance= new Subtype();
+alert(instance.getSuperValue());
+</script>
+</html>

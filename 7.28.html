@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>123</title>
+	</head>
+	<body>
+		<div class="class1">1</div>
+		<div class="class2">2</div>
+		<div class="class3">3</div>
+		<div class="class4">4</div>
+		<div  class="mydiv" id="myid">mydiv</div>
+		<table>
+			<tr>
+				<td>1111</td>
+				
+			</tr>	
+			
+			<tr>
+				<td>1111</td>
+				
+			</tr>
+			
+				<tr>
+				<td>1111</td>
+				
+			</tr>
+			
+			
+		</table>
+		
+		
+		
+	</body>
+</html>
+<script>
+	
+//窗口大小  
+/*4个属性 
+innerWidth//页面的宽度
+innerHight //高度
+outerHeight//整个视窗的高度
+outerWidth//整个视窗的宽度
+	
+risizeTo()
+risizeBy()
+	
+
+	
+var  timeoutid=setTimeout(function(){
+	alert("111");
+},2000)
+//取消 
+ clearTimeout(timeoutid);
+		
+	
+	function  getsearch(){
+		var  qs=(location.search.length>0?location.search.substring(1):"")
+		;
+		args={};
+		items=qs.length?qs.split("&"):[];
+		item=null;
+		name=null;
+		value=null;
+		i=0;
+		len=items.length;
+		
+		for(i=0;i<len;i++){
+			item=items[i].split("=");
+			name=decodeURIComponent(item[0]);
+			value=decodeURIComponent(item[1]);
+			if(name.length){
+				
+				
+				args[name]=value;
+			}
+			
+			
+			
+		}
+		
+		
+		
+		return args;
+		
+		
+		
+	}
+	
+	var args=getsearch();
+	console.log(args);
+
+	
+//移除节点 removeChild();	
+var  html=document.documentElement;
+//alert(document.childNodes[0]);
+//alert(document.firstChild);
+//获取文档标题 
+var  title=document.title;
+var  url=document.URL;
+var  domian=document.domain;
+ 
+
+alert(title);
+alert(url);
+alert(domian);
+	
+	var  div=document.getElementsByTagName("div");
+	console.log(div);
+	alert(div.length);
+	alert(div[0].innerText);
+
+
+var time=new Date();
+var p="<p>"+time.toString()+"</p>";
+console.log(p);
+
+
+
+var div=document.getElementById("myid");
+//getAttribute 获取特性 setAttribute 设置特性 removeAttribute 移除特性
+alert(div.getAttribute("id"));
+//setAttribute 2个参数 
+div.setAttribute("class","test");
+//removeAttribute("class")彻底删除某个特性
+
+var div=document.getElementById("myid");
+var textNode=div.firstChild;
+textNode.nodeValue="s23sd";
+
+分割文本节点 splitText  normalize()
+
+
+var link=document.createElement("link");
+link.rel="stylesheet";
+link.type="text/css";
+link.href="style.css";
+var head=document.getElementsByTagName("head")[0];
+head.appendChild(link);
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

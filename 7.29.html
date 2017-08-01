@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<button id="mybtn">点我</button>
+</body>
+</html>
+<script>
+    var  btn=document.getElementById("mybtn");
+
+    btn.addEventListener("click",function(event){
+        console.log(event.view);
+        console.log(event.target);
+        //都指向this  currentTarget  target
+    },false)
+
+    var  hander=function(e){
+        switch (e.type){
+        case "click":
+            alert("click");
+            break;
+        case "mouseover":
+            e.target.style.backgroundColor="red";
+            break;
+            case  "mouseout":
+            e.target.style.backgroundColor="blue";
+            break;
+        }
+    };
+
+    btn.onclick=hander;
+//
+//    preventDefault() 要阻止特定事件的默认行为
+
+
+
+
+
+
+
+</script>

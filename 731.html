@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas  id="mydraw" width="200" height="200" style="background:#ccffef">a drawing22222</canvas>
+
+
+
+</body>
+<script>
+//fillStyle 填充色 
+//
+
+   var  drawing=document.getElementById("mydraw");
+if(drawing.getContext){
+   var  context=drawing.getContext("2d");
+   context.fillStyle="#0f0fff";
+   context.fillRect(10,10,40,40);
+   
+   context.fillStyle="rgba(0,233,244,0.3)";
+
+   context.fillRect(40,40,100,100);
+   
+   
+}else{
+
+    alert(11);
+}
+   
+
+   
+
+
+
+
+
+
+</script>
+</html>
