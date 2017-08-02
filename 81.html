@@ -12,7 +12,7 @@
 </body>
 <script>
 
-
+/*
    var  drawing=document.getElementById("draw");
    
  
@@ -23,9 +23,58 @@
    cxt.strokeStyle="red";
   
 
-   
+  //
+//通过histroy.pushState 的方法 该方法可以接受三个参数 状态对象 新的的表态 相对的url;
+history.pushState({name:"acb"},"acfun","");
+history.replaceStatee({name:"acb"},"acfun","");
+window.addEventListener("popstate",function(e){
 
-   
+    var state=e.state;
+    alert(state+"1212");
+
+})   
+
+   //JSON.stringify json parse
+//xml  
+var  xhr=new  XMLHttpRequest();
+xhr.open("get","http://127.0.0.1/js%E5%AD%A6%E4%B9%A0/1.txt",false);
+xhr.send(null);
+
+if(xhr.status>200&&xhr.status<300||xhr.status==304){
+
+   alert(xhr.responseText);
+
+}else{
+   alert("error"+xhr.status);
+
+
+}
+//setRequestHeader
+var  socket=new  WebSocket("地址");
+socket.send("hello world");
+socket.send("hello  world");
+如果拿到了数据 
+就是 socket.onmessage=function(e){
+
+    var data=e.data;
+    //处理数据 ;
+
+}  
+*/ 
+
+高级函数 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
