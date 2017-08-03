@@ -1,1 +1,96 @@
-<html></html>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>特别大的画布</title>
+	<style>
+       #kuang{
+            width: 50px;
+            height:50px;
+            position:absolute;
+            border: 1px solid #ffcccf;
+           
+            display: block;
+            top:700px;
+            left:100px;
+       }
+
+	</style>
+</head>
+<body>
+  <img src="6.jpg" width="200" height="200">
+  <div id="kuang" ></div>
+
+  <canvas id="mydraw" width="1024" height="768">支持canvas</canvas>
+  
+
+</body>
+
+
+
+
+
+
+
+
+
+</html>
+
+<script type="text/javascript">
+     var draw=document.getElementById("mydraw");
+
+     var  context=draw.getContext("2d");
+
+     var  img=document.images[0];
+
+     var  kuang=document.getElementById("kuang");
+    //真实大小 
+     var  imgwidth=img.naturalWidth;//本来图片的大小
+     var  imgheight=img.naturalHeight;//本来图片的高度
+     //图片的位置
+     var  imgoffsetx=img.offsetLeft;
+     var  imgoffsety=img.offsetTop;
+    
+
+     var bilix,biliy,pointx,pointy;
+
+     bilix=imgwidth/200;
+     biliy=imgheight/200;
+    
+
+
+  
+    
+//监听 鼠标 事件的如果鼠标移动上去了 
+//
+     img.addEventListener("click",function (e) {
+     	// body...
+     	// 得到鼠标的位置   
+     	//  context.drawImage(img,0,0);
+     	  context.clearRect(0,0,1024,768);
+     	 mouserx=e.clientX;
+     	 mousery=e.clientY;
+
+     	 kuang.style.top=mousery+"px";
+     	 kuang.style.left=mouserx+"px";
+
+         //bili 尺
+         //
+         //开始的坐标 
+         pointx=mouserx-imgoffsetx;
+         pointy=mousery-imgoffsety;
+
+       // alert(pointx);
+       //  alert(pointy);
+     
+        
+     	 context.drawImage(img,pointx*bilix,pointy*biliy,50*bilix,50*biliy,0,
+     	 	0,1024,768);
+
+     })
+
+
+
+
+
+
+</script>
