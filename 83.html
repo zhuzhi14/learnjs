@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>图片上传</title>
+    <style>
+        .kuang {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: 30px;
+            left: 80px;
+            border: 2px solid #ffcccf;
+            z-index: 99;
+
+        }
+    </style>
+</head>
+
+<body>
+<form action="83.html" method="GET">
+    <input type="file" id="upload">
+
+
+</form>
+
+<div id="yulan">
+    图片预览
+    <div class="kuang" id="kuang"></div>
+    <canvas id="mycan" width="200" height="200"></canvas>
+</div>
+<div id="yulan2">
+    图片预览
+
+    <canvas id="mycan2" width="800" height="800"></canvas>
+</div>
+
+
+</body>
+<script type="text/javascript">
+
+    //监听上传
+    //
+    var upload = document.getElementById("upload");
+
+    upload.addEventListener("change", function (e) {
+
+
+        var reader = new FileReader();
+
+
+        var file = document.getElementById("upload").files[0];
+        console.log(file);
+
+        var reader = new FileReader();
+        //将文件以Data URL形式读入页面
+        reader.readAsDataURL(file);
+        console.log(reader);
+        reader.onload = function (e) {
+            //生成一个图片
+            var img = new Image();
+
+            img.src = reader.result;
+            //图片进行绘制
+
+            var can = document.getElementById("mycan");
+
+            var cxt = can.getContext("2d");
+
+            var imgwidth = img.naturalWidth;
+            var imgheight = img.naturalHeight;
+
+            cxt.drawImage(img, 0, 0, imgwidth, imgheight, 0, 0, 200, 200);
+
+            var mouserx, mousery, flag;
+            var class1 = document.getElementById("kuang");
+
+
+            class1.addEventListener("mousedown", function (e) {
+
+                mousex = e.clientX;
+                mousey = e.clientY;
+                initX = class1.offsetLeft;
+                initY = class1.offsetTop;
+                flag = true;
+
+            })
+            //  alert(flag);
+
+            class1.addEventListener("mousemove", function (e) {
+
+                if (flag) {
+
+                    //鼠标位置
+                    //鼠标移动的位置-起点位置 +文档位置
+
+                    var mouseMoveX = e.clientX, mouseMoveY = e.clientY;
+                    var weix = parseInt(mouseMoveX) - parseInt(mousex) + parseInt(initX);
+                    var weiy = parseInt(mouseMoveY) - parseInt(mousey) + parseInt(initY);
+
+
+                    class1.style.left = weix + "px";
+                    class1.style.top = weiy + "px";
+
+                    //鼠标的位置
+                    var bilix, biliy;
+
+                    bilix = img.naturalWidth / 200;
+                    biliy = img.naturalHeight / 200;
+
+                    var can2 = document.getElementById("mycan2");
+
+                    var cxt2 = can2.getContext("2d");
+                    cxt2.beginPath();
+                    cxt2.clearRect(0, 0, 800, 800);
+
+                    console.log(weix * bilix);
+
+
+                    cxt2.drawImage(img, (weix - initX) * bilix, (weiy - initY) * biliy, 50 * bilix, 50 * biliy, 0, 0, 800, 800);
+
+
+                }
+
+            })
+
+            class1.addEventListener("mouseup", function (e) {
+
+                flag = false;
+                this.style.left = initX;
+                this.style.top = initY;
+
+
+            })
+
+
+        }
+
+
+    })
+
+
+</script>
+
+
+</html>

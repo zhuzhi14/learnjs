@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>图标拖拽 </title>
+</head>
+<style>
+    #bc {
+        width: 500px;
+        height: 500px;
+        background: red;
+        position: absolute;
+        display: block;
+
+    }
+
+    #class1 {
+        width: 50px;
+        height: 50px;
+        background: green;
+        position: absolute;
+        display: block;
+
+    }
+
+
+</style>
+
+<body>
+<div id="bc">
+    <div id="class1">
+
+
+    </div>
+
+
+</div>
+</body>
+//class1 监听 mousedown 事件 如果是鼠标down 事件 就进行移动
+<script type="text/javascript">
+
+    var class1 = document.getElementById("class1");
+
+
+    var mousex, mousey, flag = false, initX, initY;
+
+    function obj(classname) {
+
+        class1.addEventListener("mousedown", function (e) {
+
+            mousex = e.clientX;
+            mousey = e.clientY;
+            initX = class1.offsetLeft;
+            initY = class1.offsetTop;
+            flag = true;
+            console.log(mousex, mousey)
+        })
+        //  alert(flag);
+
+        class1.addEventListener("mousemove", function (e) {
+
+            if (flag) {
+
+                //鼠标位置
+                //鼠标移动的位置-起点位置 +文档位置
+                var mouseMoveX = e.clientX, mouseMoveY = e.clientY;
+                this.style.left = parseInt(mouseMoveX) - parseInt(mousex) + parseInt(initX) + "px";
+                this.style.top = parseInt(mouseMoveY) - parseInt(mousey) + parseInt(initY) + "px";
+
+            }
+
+        })
+
+        class1.addEventListener("mouseup", function (e) {
+
+            flag = false;
+            this.style.left = "0px";
+            this.style.top = "0px";
+
+
+        })
+
+
+    }
+
+    obj(class1);
+
+</script>
+
+
+</html>

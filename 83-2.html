@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>黑客帝国数字雨Power by(C)涛之雨.</title>
+</head>
+<body>
+<canvas id="ad" height="7" width="1"></canvas>
+</body>
+</html>
+<script type="text/javascript">
+    var ad = document.getElementById("ad");
+    var ctx = ad.getContext("2d");
+    ad.height = window.innerHeight;
+    ad.width = window.innerWidth;
+    var chinese = "***********";
+    chinese = chinese.split("");
+    var font_size = 14;
+    var columns = ad.width / font_size;
+    console.log(columns);
+    var drops = [];
+    for (var x = 0; x < columns; x++) {
+        drops[x] = 1;
+    }
+    ;
+    //得到宽度
+    function draw() {
+
+
+        ctx.fillStyle = "#fcfdcf";
+
+
+        ctx.fillRect(0, 0, ad.width, ad.height);
+
+        //绘制整个画布
+        ctx.fillStyle = "#0fcff0";
+        ctx.font = font_size + "px arial";
+        for (var i = 0; i < drops.length; i++) {
+            var text = chinese[Math.floor(Math.random() * chinese.length)];
+            ctx.fillText(text, i * font_size, drops[i] * font_size);
+            if (drops[i] * font_size > ad.height && Math.random() > 0.965) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+            console.log(drops[i]);
+
+        }
+    }
+    setInterval(draw, 60);
+</script>

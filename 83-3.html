@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>数字雨</title>
+</head>
+<body>
+
+<canvas id="can" width="10" height="10"></canvas>
+
+</body>
+</html>
+<script type="text/javascript">
+
+    //写文字
+    //文字的大小
+    //文字的宽度
+    //文字的出现的位置 进行随即   i * font_size, drops[i] * font_size x,坐标 i 坐标 一个循环 x不变 y 变化  加个随机数 使得y 可能变化成0 从头开始掉
+
+    var can2 = document.getElementById("can");
+    var ctx = can2.getContext("2d");
+    can2.width = window.innerWidth;
+    can2.height = window.innerHeight;
+
+
+    var wenzi = "1010";
+    wenzi = wenzi.split("");
+    //文字分割
+    var font_size = 14;
+    //文字的宽度
+    var wenziwidth = can2.width / font_size;
+    var drops = [];
+
+    for (var x = 0; x < wenziwidth; x++) {
+
+
+        drops[x] = 1;
+
+
+    }
+
+    //绘制画布
+    //绘制文字
+    //文字位置 开始时候后随即
+
+    function draw() {
+        ctx.fillStyle = "rgba(0,0,0,0.05)";
+
+        ctx.fillRect(0, 0, can2.width, can2.height);
+
+        //绘制整个画布
+        ctx.fillStyle = "#0fcff0";
+
+        ctx.font = font_size + "px arial";
+        //绘制数字
+        for (var i = 0; i < drops.length; i++) {
+            //单一文字
+            var text = wenzi[Math.floor(Math.random() * wenzi.length)];
+
+            ctx.fillText(text, i * font_size, drops[i] * font_size);
+
+            //第一行开始绘制
+            if (drops[i] * font_size > can2.height && Math.random() > 0.955) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+            console.log(drops[i]);
+
+        }
+
+
+    }
+
+    setInterval(draw, 60);
+
+
+    // draw();
+    //setInterval(draw, 360);
+
+
+</script>
