@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>俄罗斯方块</title>
+  <style>
+  *{margin:0;padding:0;}
+  body{overflow:hidden;}
+  
+  input[type='button']{width:100px;height:30px;line-height:30px;cursor:pointer;}
+</style>
+</head>
+<body>
+ <canvas id="mycan" width="600" height="800">俄罗斯方块</canvas>
+ <canvas id="mynum" width="200" height="200">计分器</canvas>
+<input id="stop" type="button" value="开始" >
+  <input id="restart" type="button" value="重新开始" style="display:none;float:right;margin-top:10px;" >
+</body>
+<script type="text/javascript">
+
+  var   mycan=document.getElementById("mycan");
+  var   cxt=mycan.getContext('2d');
+  var   mynum=document.getElementById("mynum");
+  var   cxtnum=mynum.getContext('2d');
+
+  var    ynum=20;//800/40
+  var    xnum=15;//600/40
+  var   stop=true;
+
+   var  num=0;
+
+   var nowrect=[];
+
+  var createRect = [[
+      [0,0,0,0],
+      [0,0,0,0],
+      [1,1,1,1],
+      [0,0,0,0]
+    ],[
+      [0,0,0,0],
+      [0,1,1,0],
+      [0,1,1,0],
+      [0,0,0,0]
+    ],[
+      [0,0,0,0],
+      [1,1,1,0],
+      [0,1,0,0],
+      [0,0,0,0]
+    ],[
+      [0,1,1,0],
+      [0,1,0,0],
+      [0,1,0,0],
+      [0,0,0,0]
+    ],[
+      [0,1,1,0],
+      [0,0,1,0],
+      [0,0,1,0],
+      [0,0,0,0]
+    ],[
+      [0,1,0,0],
+      [0,1,1,0],
+      [0,0,1,0],
+      [0,0,0,0]
+    ],[
+      [0,0,1,0],
+      [0,1,1,0],
+      [0,1,0,0],
+      [0,0,0,0]
+    ],[
+      [0,1,0,0],
+      [0,1,0,0],
+      [0,1,0,0],
+      [0,1,0,0]
+    ]];
+
+     //画横坐标 
+//画一个20*15的画面 
+//
+
+//整个页面的数组 
+  
+   var  maincontext=[];
+//构建 20 15的长度的二维数组
+   for(var i=0;i<ynum;i++){
+    var arr=[];
+      for(var j=0;j<xnum;j++){
+
+        arr.push(0);
+
+      }
+
+      maincontext.push(arr);
+       
+   }
+  
+//初始化 init 
+
+function init(){
+
+    for(var i=0;i<ynum;i++){
+    var arr=[];
+      for(var j=0;j<xnum;j++){
+
+        arr.push(0);
+
+      }
+
+      maincontext.push(arr);
+       
+   }
+
+    nowdraw();
+    console.log(nowrect);
+   
+
+
+    document.getElementById("stop").onclick = function(){
+      document.getElementById("restart").style.display = 'block';
+      if(stop){
+        timeline = setInterval(function(){move(0,1);},600);
+
+        this.value = "暂停";
+      }else{
+        clearInterval(timeline);
+        this.value = "开始";
+      }
+      stop = !stop;
+    }
+    //重新开始
+    document.getElementById("restart").onclick = function(){
+      clearInterval(timeline);
+      document.getElementById("stop").value = "开始";
+      init();
+    }
+
+
+    document.onkeyup=function(event){
+      var e = event || window.event || arguments.callee.caller.arguments[0];
+      if(e && e.keyCode==37){//left
+        move(-1,0);
+      }else if(e && e.keyCode == 39){//right
+        move(1,0);
+      }else if(e && e.keyCode == 40){//down
+        move(0,1);
+      }else if(e && e.keyCode == 38){//up旋转
+        rotate();
+      }
+        };
+
+
+
+mynumdraw();
+ drawmain();
+
+}
+
+
+
+
+init();
+
+function mynumdraw(){
+
+  cxtnum.beginPath();
+   cxtnum.font="20px  黑体";
+   cxtnum.textAlign = 'center';    
+    cxtnum.fillText("得分:",40,40,100);
+    cxtnum.fillText(num,40,80,100);
+
+}
+
+
+
+  function  drawmain(){
+      cxt.beginPath();
+      cxt.strokeStyle="red";
+      cxt.fillStyle="green";
+
+
+
+
+       for(var i=0;i<maincontext.length;i++){
+          for(var j=0;j<maincontext[i].length;j++){
+
+            cxt.clearRect(40*j,40*i,40,40);
+              
+              if(maincontext[i][j]){
+
+              cxt.fillRect(40*j,40*i,40,40);
+
+              }else{
+
+                cxt.strokeRect(40*j,40*i,40,40);
+
+                cxt.stroke()
+              }
+
+         mynumdraw();
+
+
+          }
+
+       }
+
+}
+
+//生成 页面的数组 就是用来存放页面上的数组 放置方块信息的数组 
+//
+   
+
+   
+
+  
+   function  nowdraw(){
+      
+         nowrect=box();
+        nowrect.top=-1;
+        nowrect.left=5;
+
+
+        
+
+   }
+
+  function  move(x,y){
+     
+    for(var i=0;i<nowrect.length;i++){
+            for(var j=0;j<nowrect[i].length;j++){
+               if(nowrect[i][j]){
+               if(i+nowrect.top>=0){
+                //大于等于0 的 数组 第一行就是0了
+                maincontext[i+nowrect.top][j+nowrect.left] = 0;
+               }
+               }
+
+            }
+
+        }
+      state=getstate(x,y); 
+    if(state){
+
+       if(state!=2){
+
+         
+          nowrect.top +=y;
+          nowrect.left +=x;
+
+       }
+
+       for(var i=0;i<nowrect.length;i++){
+            for(var j=0;j<nowrect[i].length;j++){
+               if(nowrect[i][j]){
+                
+                 
+                 maincontext[i+nowrect.top][j+nowrect.left]=1;
+
+               
+               }
+
+            }
+
+        }
+   }else{
+
+        for(var i=0;i<nowrect.length;i++){
+            for(var j=0;j<nowrect[i].length;j++){
+                   if(i+nowrect.top<0){
+            continue;
+          }
+               if(nowrect[i][j]){
+
+
+              
+                 maincontext[i+nowrect.top][j+nowrect.left]=1;
+
+                 
+               }
+
+            }
+        }
+
+  var clr = [];
+for(i=0;i<maincontext.length;i++){
+        var boo = 0;
+        for(j=0;j<maincontext[i].length;j++){
+          if(maincontext[i][j]){
+            boo++;
+          }
+        }
+        if(boo==14){
+          num += 100;
+          clr.push(i);
+        }
+      }
+    for(i=0;i<clr.length;i++){
+        var id = clr.length-i-1;
+        maincontext.splice(clr[id],1);
+      }
+      //开头增加元素 
+      for(i=0;i<clr.length;i++){
+        var n = [];
+        for(j=0;j<maincontext[0].length;j++){n.push(0);}
+        maincontext.unshift(n);
+      }
+
+
+
+      for(var i=0;i<maincontext[0].length;i++){
+             if(maincontext[0][i]){
+                  alert("游戏结束");
+                  clearInterval(timeline);
+                  alert(num);
+
+                  return false;
+
+             }
+
+
+
+      }
+
+
+
+
+  nowdraw();
+
+        
+
+
+
+
+   }
+       
+     
+
+ drawmain(); 
+
+  }
+
+ //nowdraw();
+ //drawmain();  
+
+   
+ 
+
+ 
+  
+function  box(){
+      var boxi=Math.floor(Math.random()*7);
+        
+
+      return  createRect[boxi];
+}
+
+
+function getstate(x,y){
+
+       var boo=1;
+
+
+
+       for(var i=0;i<nowrect.length;i++){
+           for(var j=0;j<nowrect[i].length;j++){
+              if(nowrect[i][j]){
+                  //行数 +距离 +移动的步数
+                  //横  竖
+                   var  px=j+nowrect.left+x;
+                   var  py=i+nowrect.top+y;
+     
+                   if(py>19){
+                      
+             
+                       return 0;
+                      
+                   }
+
+                   if(px>14){
+
+                       return  2;
+                   }
+
+                   if(px<0){
+                      return 2;
+                   }
+ //底部边界
+               var  pr=maincontext[py][px];
+              
+               if(pr!=0){
+                    if(x==0){return 0};
+                   if(y==0){return  2};
+
+               }
+   
+
+
+              }
+
+
+           }
+
+
+       }
+
+     
+
+    
+
+    return  boo;
+
+}
+
+
+
+function rotate(){
+    
+  
+    for(var i=0;i<nowrect.length;i++){
+            for(var j=0;j<nowrect[i].length;j++){
+               if(nowrect[i][j]){
+               if(i+nowrect.top>=0){
+                //大于等于0 的 数组 第一行就是0了
+                maincontext[i+nowrect.top][j+nowrect.left] = 0;
+               }
+               }
+
+            }
+
+        }
+
+    var  rot=[];
+    var saver;
+//
+     for(var i=0;i<nowrect.length;i++){
+
+          rot.unshift([]); 
+
+     }
+
+for(i=0;i<nowrect.length;i++){
+      for(var j=0;j<nowrect[i].length;j++){
+        rot[j].unshift(nowrect[i][j]);
+      }
+    }
+
+
+   rot.left=nowrect.left;
+   rot.top=nowrect.top;
+   saver=nowrect;
+   nowrect=rot;
+   if(getstate(0,0)!=1){
+     nowrect = saver;
+
+   }
+
+  for(var i=0;i<nowrect.length;i++){
+     for(var j=0;j<nowrect[i].length;j++){
+           if(nowrect[i][j]){
+
+            maincontext[i+nowrect.top][j+nowrect.left]=1;
+
+           }
+
+        }
+
+     }
+
+   drawmain(); 
+
+  }
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+</html>

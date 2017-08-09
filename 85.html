@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>贪吃蛇</title>
+</head>
+<body>
+<canvas id="snake" width="600" height="600">贪吃蛇</canvas>
+
+</body>
+</html>
+<script type="text/javascript">
+//构建一个30*30的盘子 
+//构建一个蛇 长度为4
+//吃一个东西变成 长度变长 东西生成为2S一个
+//左右移动 掉头移动 
+var  sna=document.getElementById("snake");
+var  snake=sna.getContext("2d");
+var   xnum=600/20;
+var   ynum=600/20;
+
+var  mainsnake=[];
+
+var  smallsnake=[1,1,1,1];
+
+var  nowsnake=[];
+
+for(var i=0;i<30;i++){
+    var arr=[];
+    for(var j=0;j<30;j++){
+
+        arr.push(0);
+
+    }
+
+   mainsnake.push(arr);
+}
+
+//画面板 
+// 
+  function   drawmain(){
+     snake.beginPath();
+     snake.fillStyle="red";
+     snake.strokeStyle="green";
+     for(var i=0;i<mainsnake.length;i++){
+         for(var j=0;j<mainsnake[i].length;j++){
+         	  snake.clearRect(j*20,i*20,20,20);
+              if(mainsnake[i][j]){
+                 
+
+                 snake.fillRect(j*20,i*20,20,20);
+
+              }else{
+
+
+                 snake.strokeRect(j*20,i*20,20,20);
+
+
+              }
+         }
+
+
+     }
+}
+//画出小蛇
+
+function littledraw(){
+      
+ //
+   nowsnake=smallsnake;
+   nowsnake.top=0;
+   nowsnake.left=0;
+   
+   
+
+}
+
+
+littledraw();
+
+function move(x,y){
+   for(var i=0;i<nowsnake.length;i++){
+         if(nowsnake[i]){ 
+         mainsnake[0][i+nowsnake.left]=0;
+          }
+   }
+ var  state=bianjie(x,y);
+ if(state){
+   nowsnake.top +=y;
+   nowsnake.left +=x;
+
+   for(var i=0;i<nowsnake.length;i++){
+
+       if(nowsnake[i]){ 
+         mainsnake[0][i+nowsnake.left]=1;
+          }
+
+   }
+ }else{
+
+ for(var i=0;i<nowsnake.length;i++){
+
+       if(nowsnake[i]){ 
+         mainsnake[0][i+nowsnake.left]=1;
+          }
+
+    alert("撞墙了"); 
+    clearInterval(timeline); 
+
+    return false;    
+
+
+
+
+ }
+ } 
+
+drawmain();
+
+
+}
+
+function bianjie(x,y){
+
+	var  boo=1;
+
+     for(var i=0;i<nowsnake.length;i++){
+
+         var px=i+nowsnake.left+x;
+         var py=nowsnake.left+y;
+
+         if(px>29){
+
+             return 0;
+             //不可移动了
+         }
+        
+        if(py<0){
+
+            return 2  //不可以向上移动  不可以向左移动 不可以想有移动
+
+        }
+
+
+
+     }
+    return boo;
+
+}
+
+
+
+
+
+   timeline=setInterval(function(){move(1,0)},500);
+
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>贪吃蛇</title>
+</head>
+<body>
+
+  <canvas id="snake" width="600" height="600"></canvas>
+
+</body>
+</html>
+<script type="text/javascript">
+ var  sna=document.getElementById("snake");
+ var  snakext=sna.getContext('2d');
+ var  unit=20;
+
+ var  oris=[['left','right'],['up','down']];
+ var  oriss=['left','right','up','down'];
+ var  firstpos="right";
+
+
+
+//画背景 
+//
+//画蛇 
+//存储蛇的数组 
+  var snakearray=[{x:3,y:0},{x:2,y:0},{x:1,y:0}];
+
+  var  food={x:0,y:0};
+
+
+
+  //开始画蛇 
+  //
+  
+  function  drawsnake(){
+
+  	 
+      for(var i=0;i<snakearray.length;i++){
+
+       
+        snakext.fillRect(snakearray[i].x*unit,snakearray[i].y*unit,unit,unit);
+
+
+      }
+       
+  }
+
+function  beijing(){
+    snakext.beginPath();
+    snakext.fillStyle="#efefef";
+    snakext.fillRect(0,0,600,600);
+    snakext.globalCompositeOperation="source-over"; 
+
+      for(var i=0;i<snakearray.length;i++){
+
+         snakext.fillStyle="#666666";
+         snakext.strokeStyle="#3bb333";
+          snakext.strokeRect(snakearray[i].x*unit,snakearray[i].y*unit,unit,unit);
+          snakext.fillRect(snakearray[i].x*unit,snakearray[i].y*unit,unit,unit);
+
+      }
+    
+
+}
+  //改变方向 
+   function canchange(pos){
+        
+       if(pos==firstpos){
+
+       	  return true;
+       }
+       var  orisss=new  Array;
+      for(var i in  oris){
+          if(oris[i].indexOf(firstpos)!==-1){
+
+              orisss=oris[i];
+              break;
+
+          }
+           
+      }
+       //console.log(orisss);
+
+     if(orisss.indexOf(pos)!==-1){
+
+
+      	return false;
+     }
+
+      return true;
+
+
+
+   }
+
+//食物  
+  
+    function foodpoint(){
+           
+                food.x=Math.floor(Math.random()*30);
+                 food.y=Math.floor(Math.random()*30);
+            
+    }
+
+  function setPoint(){
+          snakext.beginPath();
+           snakext.fillStyle="red";
+           if(food.x>0&&food.y>0){
+           snakext.arc(food.x*unit+10,food.y*unit-10,10,0,2*Math.PI,false);
+           snakext.fill();
+           }else{
+
+           	foodpoint();
+           }
+      }
+//
+//移动 
+//
+  function move(pos){
+
+
+      switch(pos){
+      case  "left":
+       var pre=snakearray[0];
+       snakearray[0]={x:pre.x-1,y:pre.y}
+       rotate(pre);
+       break;
+     case  "right":
+       var pre=snakearray[0];
+       snakearray[0]={x:pre.x+1,y:pre.y}
+       rotate(pre);
+       break;
+
+        case  "up":
+       var pre=snakearray[0];
+       snakearray[0]={x:pre.x,y:pre.y-1}
+       rotate(pre);
+       break;
+
+        case  "down":
+       var pre=snakearray[0];
+       snakearray[0]={x:pre.x,y:pre.y+1}
+       rotate(pre);
+       break;
+
+      
+   }
+
+
+  }
+
+//变化
+  function rotate(pre){
+      var tmp;
+
+      console.log(pre);
+
+      for(var i=1;i<snakearray.length;i++){
+         tmp=snakearray[i];
+         snakearray[i]=pre;
+         pre=tmp; 
+
+      }
+
+  }
+
+  //移动方向 判断 
+  //
+  //
+  //
+    
+   function hitself(){
+
+     var head=snakearray[0];
+
+     for(var i=0;i<snakearray.length;i++){
+         if(head.x==snakearray[i].x&&head.y==snakearray[i].y){
+
+              return false;
+
+         }
+
+     }
+
+     return true;
+
+
+
+   }
+
+
+  
+   function eatfood(){
+
+        var head=snakearray[0];
+
+        if(head.x==food.x &&head.y==food.y){
+
+          //这样就吃到了 
+          //
+          //吃到之后就数组就增长了
+          
+           add();
+
+           foodpoint();
+
+
+        }
+
+
+
+   }
+   function add(){
+        var last=snakearray[snakearray.length-1];
+         var seclast=snakearray[snakearray.length-2];
+         //确定方向 
+          var px=last.x-seclast.y;
+          var  py=last.y-seclast.y;
+
+          var newEle={x:last.x+px,y:last.y+py};
+
+          snakearray.push(newEle);
+
+
+   }
+
+
+
+
+  function bianjie(){
+     //只要关注头 是否碰到边界 
+     var head=snakearray[0];
+     console.log(head);
+    
+   if(head.x<0||head.y<0){
+
+     	return true;
+
+
+
+
+     }
+     if(head.x>29||head.y>29){
+
+
+     	return true;
+     }
+
+    // return false;
+
+  
+  }
+//监听案件 
+window.onkeyup = function(key){
+    var ori = '';
+    switch(key.keyCode){
+        case 65:
+            ori = 'left';
+            break;
+        case 68:
+            ori = 'right';
+            break;
+        case 87:
+            ori = 'up';
+            break;
+        case 83:
+            ori = 'down';
+            break;
+
+    }
+  
+    //改变蛇走向
+   if(canchange(ori)){ 
+    move(ori);
+    firstpos=ori;
+
+  }
+
+}
+ foodpoint();
+
+var loop=setInterval(function(){
+   
+    move(firstpos); 
+    beijing();
+    var bian=bianjie();
+   
+    setPoint();
+    eatfood();
+    if(bian||hitself()){
+
+      alert("游戏结束了");
+      clearInterval(loop);
+      snakearray=[{x:3,y:0},{x:2,y:0},{x:1,y:0}]
+      beijing();
+      setPoint();
+      return false;
+
+
+    }
+
+},300)
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
